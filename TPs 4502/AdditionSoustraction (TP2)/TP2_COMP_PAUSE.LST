@@ -1,0 +1,174 @@
+MACRO ASSEMBLER TP2_COMP_PAUSE                              11/19/18 12:22:37 PAGE     1
+
+
+WIN32 MACRO ASSEMBLER MA51 V06.04.19OBJECT MODULE PLACED IN C:\TP\PHY4501\TP\TP2_COMP_PAUSE.OBJ
+ASSEMBLER INVOKED BY: MA51.EXE C:\TP\PHY4501\TP\TP2_COMP_PAUSE.A51 OJ(C:\TP\PHY4501\TP\TP2_COMP_PAUSE.OBJ) PIN(C:\RIDE\INC;C:\RIDE\INC\51) PIN(C:\RIDE\INC\51\) EP LINES SYNTAX(ASM51) MOD51 PR(C:\TP\PHY4501\TP\TP2_COMP_PAUSE.LST) XR DB PW(80) RB(0) 
+
+LOC     OBJ           LINE    SOURCE
+                         1      ;W_COMP_It
+                         2     ;Comparaison de deux mots codés sur 16 bits sur routine
+                         3     ;19/11/2018
+                         4     
+                         5     ;Déclaration des variables
+                         6     
+  00B7                   7     RES_INF			BIT	P3.7
+  00B6                   8     RES_SUP			BIT	P3.6				
+  007F                   9     W1_L				DATA	7FH
+  007E                  10     W1_H				DATA	7EH
+  007D                  11     W2_L				DATA	7DH
+  007C                  12     W2_H				DATA	7CH
+  0090                  13     W_IN				DATA	P1
+                        14     
+                        15     
+                        16     ;Table des IT
+  0000                  17     					ORG	0000H				;directive assembleur
+0000    802E            18     					SJMP	DEBUT
+  0003                  19     					ORG	0003H
+0003    8038            20     					SJMP	ITBP
+  0030                  21     					ORG	0030H
+                        22     
+                        23     
+                        24     
+                        25     					
+                        26     
+                        27     ;Programme principal
+                        28     DEBUT: 
+0030    75812F          29     					MOV	SP,#2FH
+0033    758801          30     					MOV	TCON,#01H
+0036    75A881          31     					MOV	IE,#81H
+0039    D289            32     					SETB	IE0	
+                        33     
+                        34     BOUCLE: 			
+                        35     
+003B    80FE            36     BOUCLEFIN: 		SJMP	BOUCLE
+                        37     FIN: 
+                        38     
+                        39     
+                        40     ;_____________________________________________________________
+                        41     ITBP: 				
+003D    C0E0            42     					PUSH	ACC
+003F    E590            43     					MOV	A,W_IN
+0041    23              44     					RL		A
+0042    23              45     					RL		A
+0043    5403            46     					ANL	A,#03H			;récupérer W1_H
+0045    F57E            47     					MOV	W1_H,A
+                        48     					
+0047    E590            49     					MOV	A,W_IN
+0049    5430            50     					ANL	A,#30H			;récupérer W1_L
+004B    C4              51     					SWAP	A
+004C    F57F            52     					MOV	W1_L,A
+                        53     					
+004E    E590            54     					MOV	A,W_IN
+0050    03              55     					RR		A
+0051    03              56     					RR		A
+0052    5403            57     					ANL	A,#03H			;récupérer W2_H
+0054    F57C            58     					MOV	W2_H,A
+                        59     					
+0056    E590            60     					MOV	A,W_IN
+0058    5403            61     					ANL	A,#03H			;récupérer W2_L
+005A    F57D            62     					MOV	W2_L,A
+005C    787E            63     					MOV	R0,#7EH
+005E    797C            64     					MOV	R1,#7CH			;initialisation des données en entrée
+0060    120074          65     				   LCALL W_COMP
+0063    A2D5            66     					MOV	C,F0
+0065    92B7            67     					MOV	RES_INF,C		;appel au sous-programme
+0067    B3              68     					CPL	C
+0068    92B6            69     					MOV	RES_SUP,C
+006A    120085          70     					LCALL	TEMPO
+006D    C2B7            71     					CLR	RES_INF
+006F    C2B6            72     					CLR	RES_SUP
+0071    D0E0            73     					POP	ACC
+0073    32              74     					RETI
+                        75     ;_____________________________________________________________
+                        76     ;comparaison mode 16bits
+                        77     
+                        78     W_COMP: 
+0074    C0E0            79     					PUSH	ACC
+0076    C3              80     					CLR	C
+0077    E6              81     					MOV	A,@R0			;(A)<-(W1_H)-(W2_H)
+0078    97              82     					SUBB	A,@R1         
+                        83     
+0079    7005            84     SIEGA:  			JNZ	FSIEGA			;Si (A)=0 alors
+007B    08              85     					INC	R0
+007C    09              86     					INC	R1
+007D    E6              87     					MOV   A,@R0      		;	(A)<-(W1_L)-(W2-L)
+007E    C3              88     					CLR	C              
+007F    97              89     					SUBB	A,@R1
+                        90     FSIEGA:                              ;FinSi
+                        91     
+0080    92D5            92         				MOV	F0,C      	;(F0)<-Retenue de la soustraction
+                        93     
+0082    D0E0            94     					POP	ACC
+0084    22              95     					RET
+                        96     
+                        97     ;_____________________________________________________________
+                        98     ;Temporisation de 3 secondes
+                        99     					
+0085    C000           100     TEMPO: 			PUSH	00H
+0087    C001           101     					PUSH  01H			;gestion de la pile pour R0, R1 et R2
+0089    C002           102     					PUSH  02H
+                       103     									
+008B    7817           104     					MOV	R0,#17H
+008D    79FF           105     RPT_T0: 			MOV	R1,#0FFH
+008F    7AFF           106     RPT_T1: 			MOV	R2,#0FFH		;temporisation de 3s
+0091    DAFE           107     RPT_T2: 			DJNZ	R2,RPT_T2
+0093    D9FA           108     					DJNZ	R1,RPT_T1
+0095    D8F6           109     					DJNZ	R0,RPT_T0
+                       110     					
+0097    D002           111     					POP	02H
+0099    D001           112                    POP   01H			;gestion de la pile pour R0, R1 et R2
+009B    D000           113                    POP   00H
+                       114                    
+009D    22             115     					RET					
+                       116     					END
+MACRO ASSEMBLER TP2_COMP_PAUSE                              11/19/18 12:22:37 PAGE     0
+
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES             REFERENCES
+
+RES_SUP. . . . . .  B ADDR   00B0H.6 A                          8# 69 72 
+P1 . . . . . . . .  D ADDR   0090H   A                          13 
+P3 . . . . . . . .  D ADDR   00B0H   A                          7 8 
+SP . . . . . . . .  D ADDR   0081H   A                          29 
+TEMPO. . . . . . .  C ADDR   0085H   A                          70 100# 
+W_COMP . . . . . .  C ADDR   0074H   A                          65 78# 
+RES_INF. . . . . .  B ADDR   00B0H.7 A                          7# 67 71 
+ACC. . . . . . . .  D ADDR   00E0H   A                          42 73 79 94 
+SIEGA. . . . . . .  C ADDR   0079H   A                          84# 
+W_IN . . . . . . .  D ADDR   0090H   A                          13# 43 49 54 60 
+IE . . . . . . . .  D ADDR   00A8H   A                          31 
+FSIEGA . . . . . .  C ADDR   0080H   A                          84 90# 
+ITBP . . . . . . .  C ADDR   003DH   A                          20 41# 
+W1_H . . . . . . .  D ADDR   007EH   A                          10# 47 
+W2_H . . . . . . .  D ADDR   007CH   A                          12# 58 
+W1_L . . . . . . .  D ADDR   007FH   A                          9# 52 
+DEBUT. . . . . . .  C ADDR   0030H   A                          18 28# 
+W2_L . . . . . . .  D ADDR   007DH   A                          11# 62 
+TCON . . . . . . .  D ADDR   0088H   A                          30 
+F0 . . . . . . . .  B ADDR   00D0H.5 A                          66 92 
+BOUCLEFIN. . . . .  C ADDR   003BH   A                          36# 
+RPT_T0 . . . . . .  C ADDR   008DH   A                          105# 109 
+RPT_T1 . . . . . .  C ADDR   008FH   A                          106# 108 
+BOUCLE . . . . . .  C ADDR   003BH   A                          34# 36 
+RPT_T2 . . . . . .  C ADDR   0091H   A                          107# 
+FIN. . . . . . . .  C ADDR   003DH   A                          37# 
+IE0. . . . . . . .  B ADDR   0088H.1 A                          32 
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    114    ----
+   XDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+REGISTER BANK(S) USED : 0 
+
+ASSEMBLY COMPLETE.   0 WARNING(S)   0 ERROR(S)

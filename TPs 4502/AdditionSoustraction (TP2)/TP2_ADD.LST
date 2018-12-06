@@ -1,0 +1,74 @@
+MACRO ASSEMBLER TP2_ADD                                     11/15/18 11:20:48 PAGE     1
+
+
+WIN32 MACRO ASSEMBLER MA51 V06.04.19OBJECT MODULE PLACED IN C:\TP\PHY4501\TP\TP2_ADD.OBJ
+ASSEMBLER INVOKED BY: MA51.EXE C:\TP\PHY4501\TP\TP2_ADD.A51 OJ(C:\TP\PHY4501\TP\TP2_ADD.OBJ) PIN(C:\RIDE\INC;C:\RIDE\INC\51) PIN(C:\RIDE\INC\51\) EP LINES SYNTAX(ASM51) MOD51 PR(C:\TP\PHY4501\TP\TP2_ADD.LST) XR DB PW(80) RB(0) 
+
+LOC     OBJ           LINE    SOURCE
+                         1     ;W_ADD
+                         2     ;Addition de deux mots codés sur 16 bits
+                         3     ;15/11/2018
+                         4     
+                         5     ;Déclaration des variables
+                         6     
+  0000                   7     RES_L				DATA	00H				
+  0001                   8     RES_H				DATA	01H
+  007F                   9     W1_L				DATA	7FH
+  007E                  10     W1_H				DATA	7EH
+  007D                  11     W2_L				DATA	7DH
+  007C                  12     W2_H				DATA	7CH
+                        13     
+                        14     ;Table des IT
+  0000                  15     					ORG	0000H				;directive assembleur
+0000    802E            16     					SJMP	DEBUT
+  0030                  17     					ORG	0030H
+                        18     
+                        19     ;Programme principal
+                        20     
+                        21     DEBUT: 
+                        22     		
+                        23     BOUCLE: 
+0030    E57F            24     					MOV	A,W1_L			;(RES_L)<-(W1_L)+(W2_L)
+0032    957D            25     					SUBB	A,W2_L
+0034    F500            26     					MOV	RES_L,A
+                        27     												;(CARRY)<-retenue de l'addition
+0036    E57E            28     					MOV	A,W1_H			;(RES_H)<-(W1_H)+(W2_H)+(CARRY)
+0038    957C            29     					SUBB	A,W2_H
+003A    F501            30     					MOV	RES_H,A
+003C    80F2            31     BOUCLE_FIN: 		SJMP	BOUCLE
+                        32     FIN: 
+                        33     					END
+MACRO ASSEMBLER TP2_ADD                                     11/15/18 11:20:48 PAGE     0
+
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES             REFERENCES
+
+W1_H . . . . . . .  D ADDR   007EH   A                          10# 28 
+W2_H . . . . . . .  D ADDR   007CH   A                          12# 29 
+RES_H. . . . . . .  D ADDR   0001H   A                          8# 30 
+W1_L . . . . . . .  D ADDR   007FH   A                          9# 24 
+DEBUT. . . . . . .  C ADDR   0030H   A                          16 21# 
+W2_L . . . . . . .  D ADDR   007DH   A                          11# 25 
+RES_L. . . . . . .  D ADDR   0000H   A                          7# 26 
+BOUCLE_FIN . . . .  C ADDR   003CH   A                          31# 
+BOUCLE . . . . . .  C ADDR   0030H   A                          23# 31 
+FIN. . . . . . . .  C ADDR   003EH   A                          32# 
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     16    ----
+   XDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+REGISTER BANK(S) USED : 0 
+
+ASSEMBLY COMPLETE.   0 WARNING(S)   0 ERROR(S)

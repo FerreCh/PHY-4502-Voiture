@@ -1,0 +1,72 @@
+MACRO ASSEMBLER TP1_ASSEMBLEUR                              11/12/18 15:16:14 PAGE     1
+
+
+WIN32 MACRO ASSEMBLER MA51 V06.04.19OBJECT MODULE PLACED IN C:\TP\PHY4501\TP\TP1_ASSEMBLEUR.OBJ
+ASSEMBLER INVOKED BY: MA51.EXE C:\TP\PHY4501\TP\TP1_ASSEMBLEUR.A51 OJ(C:\TP\PHY4501\TP\TP1_ASSEMBLEUR.OBJ) PIN(C:\RIDE\INC;C:\RIDE\INC\51) PIN(C:\RIDE\INC\51\) EP LINES SYNTAX(ASM51) MOD51 PR(C:\TP\PHY4501\TP\TP1_ASSEMBLEUR.LST) XR DB PW(80) RB(0) 
+
+LOC     OBJ           LINE    SOURCE
+                         1     ;Accès données
+                         2     ;Premier exercice
+                         3     
+                         4     ;Déclaration des variables
+                         5     
+  00A4                   6     VAL				EQU	0A4H				;valeur transferee
+  0010                   7     ADRO_1			DATA	10H
+  0031                   8     ADRO_2			DATA	31H
+  0031                   9     ADRB				BIT	31H
+                        10     
+                        11     ;Table des IT
+  0000                  12     					ORG	0000H				;directive assembleur
+0000    802E            13     					SJMP	DEBUT
+  0030                  14     					ORG	0030H
+                        15     
+                        16     ;Programme principal
+                        17     
+                        18     DEBUT: 
+0030    74A4            19     MOV A , # 164 
+0032    7580A4          20     MOV P0 , # 164 
+0035    75D000          21     					MOV	PSW,#00H			;selection de la banque 0
+0038    78A4            22     MOV R0 , # 164 
+003A    D2D3            23     					SETB	RS0				;selection banque 1
+003C    78A4            24     MOV R0 , # 164 
+003E    7510A4          25     MOV ADRO_1 , # 164 
+0041    8731            26     					MOV	ADRO_2,@R1		;transfere le contenu de l'adresse pointé par R1 dans Adro_2
+0043    D231            27     					SETB	ADRB				;(Adrb)<-1
+                        28     					
+0045    80FE            29     FIN : 				SJMP	FIN				;bouclage
+                        30     
+                        31     END											;directive assembleur
+MACRO ASSEMBLER TP1_ASSEMBLEUR                              11/12/18 15:16:14 PAGE     0
+
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES             REFERENCES
+
+P0 . . . . . . . .  D ADDR   0080H   A                          20 
+VAL. . . . . . . .  N NUMB   00A4h                              6# 19 20 22 24 25 
+                                                                
+DEBUT. . . . . . .  C ADDR   0030H   A                          13 18# 
+RS0. . . . . . . .  B ADDR   00D0H.3 A                          23 
+ADRO_1 . . . . . .  D ADDR   0010H   A                          7# 25 
+ADRO_2 . . . . . .  D ADDR   0031H   A                          8# 26 
+ADRB . . . . . . .  B ADDR   0026H.0 A                          9# 27 
+PSW. . . . . . . .  D ADDR   00D0H   A                          21 
+FIN. . . . . . . .  C ADDR   0045H   A                          29# 
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     25    ----
+   XDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+REGISTER BANK(S) USED : 0 
+
+ASSEMBLY COMPLETE.   0 WARNING(S)   0 ERROR(S)

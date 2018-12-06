@@ -1,0 +1,78 @@
+MACRO ASSEMBLER TP2_COMP                                    11/15/18 11:58:59 PAGE     1
+
+
+WIN32 MACRO ASSEMBLER MA51 V06.04.19OBJECT MODULE PLACED IN C:\TP\PHY4501\TP\TP2_COMP.OBJ
+ASSEMBLER INVOKED BY: MA51.EXE C:\TP\PHY4501\TP\TP2_COMP.A51 OJ(C:\TP\PHY4501\TP\TP2_COMP.OBJ) PIN(C:\RIDE\INC;C:\RIDE\INC\51) PIN(C:\RIDE\INC\51\) EP LINES SYNTAX(ASM51) MOD51 PR(C:\TP\PHY4501\TP\TP2_COMP.LST) XR DB PW(80) RB(0) 
+
+LOC     OBJ           LINE    SOURCE
+                         1     ;W_COMP
+                         2     ;Comparaison de deux mots codés sur 16 bits
+                         3     ;15/11/2018
+                         4     
+                         5     ;Déclaration des variables
+                         6     
+  00B7                   7     RES				BIT	P3.7				
+  007F                   8     W1_L				DATA	7FH
+  007E                   9     W1_H				DATA	7EH
+  007D                  10     W2_L				DATA	7DH
+  007C                  11     W2_H				DATA	7CH
+                        12     
+                        13     ;Table des IT
+  0000                  14     					ORG	0000H				;directive assembleur
+0000    802E            15     					SJMP	DEBUT
+  0030                  16     					ORG	0030H
+                        17     
+                        18     ;Programme principal
+                        19     
+                        20     DEBUT: 
+                        21     		
+                        22     BOUCLE: 
+0030    E57E            23     					MOV	A,W1_H			;(RES_L)<-(W1_H)-(W2_H)
+0032    957C            24     					SUBB	A,W2_H
+                        25     
+0034    6004            26     SIEGA:  			JZ		FSIEGA	
+0036    E57F            27     					MOV   A,W1_L
+0038    957D            28     					SUBB	A,W2_L
+                        29     FSIEGA: 
+                        30     
+003A    92B7            31         				MOV	RES,C
+                        32     
+003C    80F2            33     BOUCLEFIN: 		SJMP	BOUCLE
+                        34     FIN: 
+                        35     					END
+MACRO ASSEMBLER TP2_COMP                                    11/15/18 11:58:59 PAGE     0
+
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES             REFERENCES
+
+P3 . . . . . . . .  D ADDR   00B0H   A                          7 
+SIEGA. . . . . . .  C ADDR   0034H   A                          26# 
+RES. . . . . . . .  B ADDR   00B0H.7 A                          7# 31 
+FSIEGA . . . . . .  C ADDR   003AH   A                          26 29# 
+W1_H . . . . . . .  D ADDR   007EH   A                          9# 23 
+W2_H . . . . . . .  D ADDR   007CH   A                          11# 24 
+W1_L . . . . . . .  D ADDR   007FH   A                          8# 27 
+DEBUT. . . . . . .  C ADDR   0030H   A                          15 20# 
+W2_L . . . . . . .  D ADDR   007DH   A                          10# 28 
+BOUCLEFIN. . . . .  C ADDR   003CH   A                          33# 
+BOUCLE . . . . . .  C ADDR   0030H   A                          22# 33 
+FIN. . . . . . . .  C ADDR   003EH   A                          34# 
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     16    ----
+   XDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+REGISTER BANK(S) USED : 0 
+
+ASSEMBLY COMPLETE.   0 WARNING(S)   0 ERROR(S)

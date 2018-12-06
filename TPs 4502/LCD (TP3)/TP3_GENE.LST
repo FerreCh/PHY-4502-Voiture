@@ -1,0 +1,121 @@
+MACRO ASSEMBLER TP3_GENE                                    11/19/18 17:02:32 PAGE     1
+
+
+WIN32 MACRO ASSEMBLER MA51 V06.04.19OBJECT MODULE PLACED IN C:\TP\PHY4501\TP\TP3_GENE.OBJ
+ASSEMBLER INVOKED BY: MA51.EXE C:\TP\PHY4501\TP\TP3_GENE.A51 OJ(C:\TP\PHY4501\TP\TP3_GENE.OBJ) PIN(C:\RIDE\INC;C:\RIDE\INC\51) PIN(C:\RIDE\INC\51\) EP LINES SYNTAX(ASM51) MOD51 PR(C:\TP\PHY4501\TP\TP3_GENE.LST) XR DB PW(80) RB(0) 
+
+LOC     OBJ           LINE    SOURCE
+                         1        ;Gene
+                         2      ;Generer signal rectangulaire
+                         3      ;19/11/18
+                         4      
+                         5      ;Déclaration des variables
+                         6     
+  00B0                   7     GENE				BIT	P3.0
+                         8     
+                         9     ;Table des IT
+  0000                  10     					ORG	0000H				;directive assembleur
+0000    802E            11     					SJMP	DEBUT
+  000B                  12     					ORG	000BH
+000B    802A            13     					SJMP	ITIMER0
+  0030                  14     					ORG	0030H
+                        15     
+                        16     ;Programme principal
+                        17     DEBUT: 			
+0030    120059          18     					LCALL INIT
+0033    D28D            19     					SETB	TF0				;On active la première interruption
+                        20     							
+                        21     
+                        22     BOUCLE: 			
+                        23     									
+                        24     
+0035    80FE            25     					SJMP	BOUCLE
+                        26     FIN: 
+                        27     
+                        28     ;
+                        29     ;----------------------------------------------------------------------------
+                        30     ;interuption timer 0
+                        31     ITIMER0: 
+0037    C0E0            32     					PUSH 	ACC
+                        33     					
+0039    30B006          34     SIHAUT: 			JNB	GENE,SINON
+003C    78E7            35     					MOV	R0,#0E7H
+003E    79FC            36     					MOV	R1,#0FCH
+                        37     
+0040    8004            38     FINSI: 			SJMP	FSINON
+0042    783F            39     SINON: 			MOV	R0,#3FH
+0044    79FF            40     					MOV	R1,#0FFH
+                        41     
+                        42     FSINON: 
+                        43     					
+                        44     					
+0046    C28C            45     					CLR	TR0				;on arrete le timer	1
+0048    E58A            46     					MOV	A,TL0				;							1			
+004A    28              47     					ADD	A,R0				;							1			
+004B    F58A            48     					MOV	TL0,A				;							1		
+004D    E58C            49     					MOV	A,TH0				;							1			
+004F    39              50     					ADDC	A,R1				;							1			
+0050    F58C            51     					MOV	TH0,A				;							1			
+                        52     
+0052    D28C            53     					SETB	TR0				;démarage du timer
+0054    B2B0            54     					CPL	GENE				;on passe d'un état à l'autre
+                        55     					
+0056    D0E0            56     					POP ACC
+0058    32              57     					RETI
+                        58     					
+                        59     					
+                        60     ;
+                        61     ;______________________________________________________________
+                        62     ;initialisation
+                        63     
+                        64     INIT: 
+0059    75A882          65     					MOV	IE,#82H
+005C    758901          66     					MOV	TMOD,#01H		;mode timer 16bit
+005F    758C00          67     					MOV	TH0,#00H			;Timer à 0
+0062    758A00          68     					MOV	TL0,#00H
+0065    22              69     					RET
+                        70     					
+                        71     					
+                        72     					END
+MACRO ASSEMBLER TP3_GENE                                    11/19/18 17:02:32 PAGE     0
+
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES             REFERENCES
+
+P3 . . . . . . . .  D ADDR   00B0H   A                          7 
+SINON. . . . . . .  C ADDR   0042H   A                          34 39# 
+ACC. . . . . . . .  D ADDR   00E0H   A                          32 56 
+TF0. . . . . . . .  B ADDR   0088H.5 A                          19 
+TH0. . . . . . . .  D ADDR   008CH   A                          49 51 67 
+FSINON . . . . . .  C ADDR   0046H   A                          38 42# 
+SIHAUT . . . . . .  C ADDR   0039H   A                          34# 
+IE . . . . . . . .  D ADDR   00A8H   A                          65 
+TL0. . . . . . . .  D ADDR   008AH   A                          46 48 68 
+INIT . . . . . . .  C ADDR   0059H   A                          18 64# 
+DEBUT. . . . . . .  C ADDR   0030H   A                          11 17# 
+TMOD . . . . . . .  D ADDR   0089H   A                          66 
+TR0. . . . . . . .  B ADDR   0088H.4 A                          45 53 
+FINSI. . . . . . .  C ADDR   0040H   A                          38# 
+BOUCLE . . . . . .  C ADDR   0035H   A                          22# 25 
+ITIMER0. . . . . .  C ADDR   0037H   A                          13 31# 
+FIN. . . . . . . .  C ADDR   0037H   A                          26# 
+GENE . . . . . . .  B ADDR   00B0H.0 A                          7# 34 54 
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     58    ----
+   XDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+REGISTER BANK(S) USED : 0 
+
+ASSEMBLY COMPLETE.   0 WARNING(S)   0 ERROR(S)

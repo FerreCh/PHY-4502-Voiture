@@ -1,0 +1,80 @@
+MACRO ASSEMBLER TP1_COMPTEUR                                11/12/18 16:42:03 PAGE     1
+
+
+WIN32 MACRO ASSEMBLER MA51 V06.04.19OBJECT MODULE PLACED IN C:\TP\PHY4501\TP\TP1_COMPTEUR.OBJ
+ASSEMBLER INVOKED BY: MA51.EXE C:\TP\PHY4501\TP\TP1_COMPTEUR.A51 OJ(C:\TP\PHY4501\TP\TP1_COMPTEUR.OBJ) PIN(C:\RIDE\INC;C:\RIDE\INC\51) PIN(C:\RIDE\INC\51\) EP LINES SYNTAX(ASM51) MOD51 PR(C:\TP\PHY4501\TP\TP1_COMPTEUR.LST) XR DB PW(80) RB(0) 
+
+LOC     OBJ           LINE    SOURCE
+                         1     ;Compteur
+                         2     ;Troisieme exercice
+                         3     
+                         4     ;Déclaration des variables
+                         5     
+  0080                   6     BP					BIT	P0.0				;bouton poussoir
+  00B0                   7     AFF				EQU	P3					;valeur a afficher
+  0081                   8     SEL				BIT	P0.1				;selection du mode
+                         9     
+                        10     ;Table des IT
+  0000                  11     					ORG	0000H				;directive assembleur
+0000    802E            12     					SJMP	DEBUT
+  0030                  13     					ORG	0030H
+                        14     
+                        15     ;Programme principal
+                        16     
+                        17     DEBUT: 
+                        18     
+0030    75B000          19     MOV 176 , # 00H 
+                        20     RPT: 
+0033    3080FD          21     ATTENTEHAUT: 	JNB	BP,ATTENTEHAUT	;Attente BP=1
+0036    2080FD          22     ATTENTEBAS: 		JB		BP,ATTENTEBAS	;Attente BP=0
+                        23     
+0039    208104          24     SI: 				JB		SEL,SINON		;Si SEL=0
+003C    15B0            25     DEC 176 
+003E    8002            26     FSI: 				SJMP	FSN
+                        27     
+0040    05B0            28     SINON:  INC 176 
+                        29     
+                        30     FSN: 					
+                        31     										
+0042    80EF            32     JSQ: 				SJMP	RPT				;boucler à rpt
+                        33     FIN: 				
+                        34     					END
+MACRO ASSEMBLER TP1_COMPTEUR                                11/12/18 16:42:03 PAGE     0
+
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES             REFERENCES
+
+P0 . . . . . . . .  D ADDR   0080H   A                          6 8 
+FSI. . . . . . . .  C ADDR   003EH   A                          26# 
+P3 . . . . . . . .  D ADDR   00B0H   A                          7 
+SEL. . . . . . . .  B ADDR   0080H.1 A                          8# 24 
+FSN. . . . . . . .  C ADDR   0042H   A                          26 30# 
+SINON. . . . . . .  C ADDR   0040H   A                          24 28# 
+ATTENTEHAUT. . . .  C ADDR   0033H   A                          21# 
+ATTENTEBAS . . . .  C ADDR   0036H   A                          22# 
+AFF. . . . . . . .  N NUMB   00B0h                              7# 19 25 28 
+JSQ. . . . . . . .  C ADDR   0042H   A                          32# 
+BP . . . . . . . .  B ADDR   0080H.0 A                          6# 21 22 
+DEBUT. . . . . . .  C ADDR   0030H   A                          12 17# 
+RPT. . . . . . . .  C ADDR   0033H   A                          20# 32 
+SI . . . . . . . .  C ADDR   0039H   A                          24# 
+FIN. . . . . . . .  C ADDR   0044H   A                          33# 
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     22    ----
+   XDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+REGISTER BANK(S) USED : 0 
+
+ASSEMBLY COMPLETE.   0 WARNING(S)   0 ERROR(S)

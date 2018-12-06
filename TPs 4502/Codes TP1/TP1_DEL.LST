@@ -1,0 +1,64 @@
+MACRO ASSEMBLER TP1_DEL                                     11/12/18 16:02:17 PAGE     1
+
+
+WIN32 MACRO ASSEMBLER MA51 V06.04.19OBJECT MODULE PLACED IN C:\TP\PHY4501\TP\TP1_DEL.OBJ
+ASSEMBLER INVOKED BY: MA51.EXE C:\TP\PHY4501\TP\TP1_DEL.A51 OJ(C:\TP\PHY4501\TP\TP1_DEL.OBJ) PIN(C:\RIDE\INC;C:\RIDE\INC\51) PIN(C:\RIDE\INC\51\) EP LINES SYNTAX(ASM51) MOD51 PR(C:\TP\PHY4501\TP\TP1_DEL.LST) XR DB PW(80) RB(0) 
+
+LOC     OBJ           LINE    SOURCE
+                         1     ;Commande DEL
+                         2     ;Deuxieme exercice
+                         3     
+                         4     ;Déclaration des variables
+                         5     
+  0080                   6     BP					BIT	P0.0				;bouton poussoir
+  00B0                   7     AFF				BIT	P3.0				;DEL
+                         8     
+                         9     ;Table des IT
+  0000                  10     					ORG	0000H				;directive assembleur
+0000    802E            11     					SJMP	DEBUT
+  0030                  12     					ORG	0030H
+                        13     
+                        14     ;Programme principal
+                        15     
+                        16     DEBUT: 
+                        17     RPT: 
+0030    3080FD          18     ATTENTEHAUT: 	JNB	BP,ATTENTEHAUT	;Attente BP=1
+0033    2080FD          19     ATTENTEBAS: 		JB		BP,ATTENTEBAS	;Attente BP=0
+0036    B2B0            20     					CPL	AFF				;changer etat DEL
+0038    80F6            21     JSQ: 				SJMP	RPT				;boucler à rpt
+                        22     FIN: 				
+                        23     					END
+MACRO ASSEMBLER TP1_DEL                                     11/12/18 16:02:17 PAGE     0
+
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES             REFERENCES
+
+P0 . . . . . . . .  D ADDR   0080H   A                          6 
+P3 . . . . . . . .  D ADDR   00B0H   A                          7 
+ATTENTEHAUT. . . .  C ADDR   0030H   A                          18# 
+ATTENTEBAS . . . .  C ADDR   0033H   A                          19# 
+AFF. . . . . . . .  B ADDR   00B0H.0 A                          7# 20 
+JSQ. . . . . . . .  C ADDR   0038H   A                          21# 
+BP . . . . . . . .  B ADDR   0080H.0 A                          6# 18 19 
+DEBUT. . . . . . .  C ADDR   0030H   A                          11 16# 
+RPT. . . . . . . .  C ADDR   0030H   A                          17# 21 
+FIN. . . . . . . .  C ADDR   003AH   A                          22# 
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     12    ----
+   XDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+REGISTER BANK(S) USED : 0 
+
+ASSEMBLY COMPLETE.   0 WARNING(S)   0 ERROR(S)

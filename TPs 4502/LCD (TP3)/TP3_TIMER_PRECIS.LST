@@ -1,0 +1,80 @@
+MACRO ASSEMBLER TP3_TIMER_PRECIS                            11/19/18 15:47:10 PAGE     1
+
+
+WIN32 MACRO ASSEMBLER MA51 V06.04.19OBJECT MODULE PLACED IN C:\TP\PHY4501\TP\TP3_TIMER_PRECIS.OBJ
+ASSEMBLER INVOKED BY: MA51.EXE C:\TP\PHY4501\TP\TP3_TIMER_PRECIS.A51 OJ(C:\TP\PHY4501\TP\TP3_TIMER_PRECIS.OBJ) PIN(C:\RIDE\INC;C:\RIDE\INC\51) PIN(C:\RIDE\INC\51\) EP LINES SYNTAX(ASM51) MOD51 PR(C:\TP\PHY4501\TP\TP3_TIMER_PRECIS.LST) XR DB PW(80) RB(0) 
+
+LOC     OBJ           LINE    SOURCE
+                         1       ;Timer_50ms précis
+                         2      ;Faire clignoter une led avec un compteur 16 bits
+                         3      ;19/11/18
+                         4      
+                         5      ;Déclaration des variables
+                         6     
+  00B0                   7     LED				BIT	P3.0
+                         8     
+                         9     ;Table des IT
+  0000                  10     					ORG	0000H				;directive assembleur
+0000    802E            11     					SJMP	DEBUT
+  0030                  12     					ORG	0030H
+                        13     
+                        14     ;Programme principal
+0030    758901          15     DEBUT: 			MOV	TMOD,#01H		;mode timer 16bit
+0033    758C00          16     					MOV	TH0,#00H			;Timer à 0
+0036    758A00          17     					MOV	TL0,#00H
+                        18     							
+                        19     
+                        20     BOUCLE: 			
+0039    C3              21     					CLR	C
+003A    C28D            22     					CLR	TF0				;on remet le flag à 0
+003C    C28C            23     					CLR	TR0				;on arrete le timer
+003E    E58A            24     					MOV	A,TL0				;										
+0040    24B7            25     					ADD	A,#0B7H			;										
+0042    F58A            26     					MOV	TL0,A				;									
+0044    E58C            27     					MOV	A,TH0				;										
+0046    343C            28     					ADDC	A,#3CH			;										
+0048    F58C            29     					MOV	TH0,A				;										
+                        30     
+004A    D28C            31     					SETB	TR0				;démarage du timer
+                        32     					
+004C    308DFD          33     ATTENTE: 			JNB	TF0,ATTENTE		;attente du flag
+004F    B2B0            34     					CPL	LED				;on change l'etat de la LED
+                        35     
+0051    80E6            36     					SJMP	BOUCLE
+                        37     FIN: 					
+                        38     					END
+MACRO ASSEMBLER TP3_TIMER_PRECIS                            11/19/18 15:47:10 PAGE     0
+
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES             REFERENCES
+
+P3 . . . . . . . .  D ADDR   00B0H   A                          7 
+TF0. . . . . . . .  B ADDR   0088H.5 A                          22 33 
+TH0. . . . . . . .  D ADDR   008CH   A                          16 27 29 
+TL0. . . . . . . .  D ADDR   008AH   A                          17 24 26 
+DEBUT. . . . . . .  C ADDR   0030H   A                          11 15# 
+TMOD . . . . . . .  D ADDR   0089H   A                          15 
+ATTENTE. . . . . .  C ADDR   004CH   A                          33# 
+LED. . . . . . . .  B ADDR   00B0H.0 A                          7# 34 
+TR0. . . . . . . .  B ADDR   0088H.4 A                          23 31 
+BOUCLE . . . . . .  C ADDR   0039H   A                          20# 36 
+FIN. . . . . . . .  C ADDR   0053H   A                          37# 
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     37    ----
+   XDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+REGISTER BANK(S) USED : 0 
+
+ASSEMBLY COMPLETE.   0 WARNING(S)   0 ERROR(S)

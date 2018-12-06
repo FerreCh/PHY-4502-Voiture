@@ -1,0 +1,131 @@
+MACRO ASSEMBLER TP2_COMP-IN                                 11/19/18 11:21:09 PAGE     1
+
+
+WIN32 MACRO ASSEMBLER MA51 V06.04.19OBJECT MODULE PLACED IN C:\TP\PHY4501\TP\TP2_COMP-IN.OBJ
+ASSEMBLER INVOKED BY: MA51.EXE C:\TP\PHY4501\TP\TP2_COMP-IN.A51 OJ(C:\TP\PHY4501\TP\TP2_COMP-IN.OBJ) PIN(C:\RIDE\INC;C:\RIDE\INC\51) PIN(C:\RIDE\INC\51\) EP LINES SYNTAX(ASM51) MOD51 PR(C:\TP\PHY4501\TP\TP2_COMP-IN.LST) XR DB PW(80) RB(0) 
+
+LOC     OBJ           LINE    SOURCE
+                         1     ;W_COMP_In
+                         2     ;Comparaison de deux mots codés sur 16 bits sur routine
+                         3     ;19/11/2018
+                         4     
+                         5     ;Déclaration des variables
+                         6     
+  00B7                   7     RES_INF			BIT	P3.7
+  00B6                   8     RES_SUP			BIT	P3.6				
+  007F                   9     W1_L				DATA	7FH
+  007E                  10     W1_H				DATA	7EH
+  007D                  11     W2_L				DATA	7DH
+  007C                  12     W2_H				DATA	7CH
+  0090                  13     W_IN				DATA	P1
+                        14     
+                        15     ;Table des IT
+  0000                  16     					ORG	0000H				;directive assembleur
+0000    802E            17     					SJMP	DEBUT
+  0030                  18     					ORG	0030H
+                        19     
+                        20     ;Programme principal
+                        21     
+                        22     DEBUT: 
+0030    852F81          23     					MOV	SP,2FH
+                        24     						
+                        25     		
+                        26     BOUCLE: 			
+0033    E590            27     					MOV	A,W_IN
+0035    23              28     					RL		A
+0036    23              29     					RL		A
+0037    5403            30     					ANL	A,#03H			;récupérer W1_H
+0039    F57E            31     					MOV	W1_H,A
+                        32     					
+003B    E590            33     					MOV	A,W_IN
+003D    5430            34     					ANL	A,#30H			;récupérer W1_L
+003F    C4              35     					SWAP	A
+0040    F57F            36     					MOV	W1_L,A
+                        37     					
+0042    E590            38     					MOV	A,W_IN
+0044    03              39     					RR		A
+0045    03              40     					RR		A
+0046    5403            41     					ANL	A,#03H			;récupérer W2_H
+0048    F57C            42     					MOV	W2_H,A
+                        43     					
+004A    E590            44     					MOV	A,W_IN
+004C    5403            45     					ANL	A,#03H			;récupérer W2_L
+004E    F57D            46     					MOV	W2_L,A
+                        47     					
+                        48     					
+0050    787E            49     					MOV	R0,#7EH
+0052    797C            50     					MOV	R1,#7CH			;initialisation des données en entrée
+0054    120060          51     				   LCALL W_COMP
+0057    A2D5            52     					MOV	C,F0
+0059    92B7            53     					MOV	RES_INF,C		;appel au sous-programme
+005B    B3              54     					CPL	C
+005C    92B6            55     					MOV	RES_SUP,C
+                        56     				
+005E    80D3            57     BOUCLEFIN: 		SJMP	BOUCLE
+                        58     FIN: 
+                        59     
+                        60     
+                        61     ;_____________________________________________________________
+                        62     
+                        63     W_COMP: 
+0060    C0E0            64     					PUSH	ACC
+0062    C3              65     					CLR	C
+0063    E6              66     					MOV	A,@R0			;(A)<-(W1_H)-(W2_H)
+0064    97              67     					SUBB	A,@R1         
+                        68     
+0065    7005            69     SIEGA:  			JNZ	FSIEGA			;Si (A)=0 alors
+0067    08              70     					INC	R0
+0068    09              71     					INC	R1
+0069    E6              72     					MOV   A,@R0      		;	(A)<-(W1_L)-(W2-L)
+006A    C3              73     					CLR	C              
+006B    97              74     					SUBB	A,@R1
+                        75     FSIEGA:                              ;FinSi
+                        76     
+006C    92D5            77         				MOV	F0,C      	;(F0)<-Retenue de la soustraction
+                        78     
+006E    D0E0            79     					POP	ACC
+0070    22              80     					RET
+                        81     					END
+MACRO ASSEMBLER TP2_COMP-IN                                 11/19/18 11:21:09 PAGE     0
+
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES             REFERENCES
+
+RES_SUP. . . . . .  B ADDR   00B0H.6 A                          8# 55 
+P1 . . . . . . . .  D ADDR   0090H   A                          13 
+P3 . . . . . . . .  D ADDR   00B0H   A                          7 8 
+SP . . . . . . . .  D ADDR   0081H   A                          23 
+W_COMP . . . . . .  C ADDR   0060H   A                          51 63# 
+RES_INF. . . . . .  B ADDR   00B0H.7 A                          7# 53 
+ACC. . . . . . . .  D ADDR   00E0H   A                          64 79 
+SIEGA. . . . . . .  C ADDR   0065H   A                          69# 
+W_IN . . . . . . .  D ADDR   0090H   A                          13# 27 33 38 44 
+FSIEGA . . . . . .  C ADDR   006CH   A                          69 75# 
+W1_H . . . . . . .  D ADDR   007EH   A                          10# 31 
+W2_H . . . . . . .  D ADDR   007CH   A                          12# 42 
+W1_L . . . . . . .  D ADDR   007FH   A                          9# 36 
+DEBUT. . . . . . .  C ADDR   0030H   A                          17 22# 
+W2_L . . . . . . .  D ADDR   007DH   A                          11# 46 
+F0 . . . . . . . .  B ADDR   00D0H.5 A                          52 77 
+BOUCLEFIN. . . . .  C ADDR   005EH   A                          57# 
+BOUCLE . . . . . .  C ADDR   0033H   A                          26# 57 
+FIN. . . . . . . .  C ADDR   0060H   A                          58# 
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     67    ----
+   XDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+REGISTER BANK(S) USED : 0 
+
+ASSEMBLY COMPLETE.   0 WARNING(S)   0 ERROR(S)

@@ -1,0 +1,96 @@
+MACRO ASSEMBLER TP2_COMP-RT                                 11/15/18 12:51:26 PAGE     1
+
+
+WIN32 MACRO ASSEMBLER MA51 V06.04.19OBJECT MODULE PLACED IN C:\TP\PHY4501\TP\TP2_COMP-RT.OBJ
+ASSEMBLER INVOKED BY: MA51.EXE C:\TP\PHY4501\TP\TP2_COMP-RT.A51 OJ(C:\TP\PHY4501\TP\TP2_COMP-RT.OBJ) PIN(C:\RIDE\INC;C:\RIDE\INC\51) PIN(C:\RIDE\INC\51\) EP LINES SYNTAX(ASM51) MOD51 PR(C:\TP\PHY4501\TP\TP2_COMP-RT.LST) XR DB PW(80) RB(0) 
+
+LOC     OBJ           LINE    SOURCE
+                         1     ;W_COMP_Rt
+                         2     ;Comparaison de deux mots codés sur 16 bits sur routine
+                         3     ;15/11/2018
+                         4     
+                         5     ;Déclaration des variables
+                         6     
+  00B7                   7     RES_RT			BIT	P3.7				
+  007F                   8     W1_L				DATA	7FH
+  007E                   9     W1_H				DATA	7EH
+  007D                  10     W2_L				DATA	7DH
+  007C                  11     W2_H				DATA	7CH
+                        12     
+                        13     ;Table des IT
+  0000                  14     					ORG	0000H				;directive assembleur
+0000    802E            15     					SJMP	DEBUT
+  0030                  16     					ORG	0030H
+                        17     
+                        18     ;Programme principal
+                        19     
+                        20     DEBUT: 
+                        21     		
+0030    120039          22     BOUCLE: 			LCALL W_COMP
+0033    A2D5            23     					MOV	C,F0
+0035    92B7            24     					MOV	RES_RT,C
+                        25     				
+0037    80F7            26     BOUCLEFIN: 		SJMP	BOUCLE
+                        27     FIN: 
+                        28     
+                        29     
+                        30     ;_____________________________________________________________
+                        31     
+                        32     W_COMP: 
+0039    C0E0            33     					PUSH	ACC
+003B    C3              34     					CLR	C
+003C    E6              35     					MOV	A,@R0			;(A)<-(W1_H)-(W2_H)
+003D    97              36     					SUBB	A,@R1         
+                        37     
+003E    7005            38     SIEGA:  			JNZ	FSIEGA			;Si (A)=0 alors
+0040    18              39     					DEC	R0
+0041    19              40     					DEC	R1
+0042    E6              41     					MOV   A,@R0      		;	(A)<-(W1_L)-(W2-L)
+0043    C3              42     					CLR	C              
+0044    97              43     					SUBB	A,@R1
+                        44     FSIEGA:                              ;FinSi
+                        45     
+0045    92D5            46         				MOV	F0,C      	;(F0)<-Retenue de la soustraction
+                        47     
+0047    D0E0            48     					POP	ACC
+0049    22              49     					RET
+                        50     					END
+MACRO ASSEMBLER TP2_COMP-RT                                 11/15/18 12:51:26 PAGE     0
+
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES             REFERENCES
+
+P3 . . . . . . . .  D ADDR   00B0H   A                          7 
+W_COMP . . . . . .  C ADDR   0039H   A                          22 32# 
+ACC. . . . . . . .  D ADDR   00E0H   A                          33 48 
+SIEGA. . . . . . .  C ADDR   003EH   A                          38# 
+FSIEGA . . . . . .  C ADDR   0045H   A                          38 44# 
+W1_H . . . . . . .  D ADDR   007EH   A                          9# 
+RES_RT . . . . . .  B ADDR   00B0H.7 A                          7# 24 
+W2_H . . . . . . .  D ADDR   007CH   A                          11# 
+W1_L . . . . . . .  D ADDR   007FH   A                          8# 
+DEBUT. . . . . . .  C ADDR   0030H   A                          15 20# 
+W2_L . . . . . . .  D ADDR   007DH   A                          10# 
+F0 . . . . . . . .  B ADDR   00D0H.5 A                          23 46 
+BOUCLEFIN. . . . .  C ADDR   0037H   A                          26# 
+BOUCLE . . . . . .  C ADDR   0030H   A                          22# 26 
+FIN. . . . . . . .  C ADDR   0039H   A                          27# 
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     28    ----
+   XDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+REGISTER BANK(S) USED : 0 
+
+ASSEMBLY COMPLETE.   0 WARNING(S)   0 ERROR(S)

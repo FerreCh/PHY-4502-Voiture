@@ -1,0 +1,148 @@
+LX51 CODE BANKING LINKER/LOCATOR V05.01.33                                     12/03/18  15:08:26
+WIN32 LX51 CODE BANKING LINKER/LOCATOR V05.01.33,  INVOKED BY:
+LX51 c:\tp\phy4501\projet\pwm\v1.obj , c:\tp\phy4501\tp\myproject.DTP TO(c:\tp\phy4501\tp\myproje&
+ct.AOF) PR(c:\tp\phy4501\tp\myproject.m51) XSIZE(65536) CSIZE(65536) RS(256) RSI(128) IX MAP 
+
+
+INPUT MODULES INCLUDED
+  C:\TP\PHY4501\PROJET\PWM\V1.OBJ(V1)
+  C:\TP\PHY4501\TP\MYPROJECT.DTP(_WKRDTP_)
+
+
+LINK MAP OF MODULE: C:\TP\PHY4501\TP\MYPROJECT.AOF (MYPROJECT)
+
+    TYPE     BASE       LENGTH    RELOCATION     SEGMENT NAME
+    ----     ----       ------    ----------     ------------
+
+    * * * * * * *   DATA/IDATA    M E M O R Y   * * * * * * *
+    REG      0000H      0008H     ABSOLUTE       "REG BANK 0"
+
+    * * * * * * *   CODE          M E M O R Y   * * * * * * *
+    CODE     0000H      0002H     ABSOLUTE       
+             0002H      0009H                    *** GAP ***
+    CODE     000BH      0002H     ABSOLUTE       
+             000DH      0023H                    *** GAP ***
+    CODE     0030H      0086H     ABSOLUTE       
+
+EXECUTABLE SUMMARY:
+-------------------
+    Total INTERNAL RAM storage requirement:  0008H (8)
+    Total EXTERNAL RAM storage requirement:  0000H (0)
+    Total     CODE     storage requirement:  008AH (138)
+Note:  Summary does not include dynamic stack requirements
+
+
+REFERENCE MAP OF MODULE: C:\TP\PHY4501\TP\MYPROJECT.AOF (MYPROJECT)
+
+SEGMENT                           BI_GROUP            DT_GROUP             ID_GROUP             XD_GROUP
+  +--> CALLED SEGMENT          START    LENGTH     START    LENGTH     START    LENGTH     START    LENGTH
+--------------------------------------------------------------------------------------
+
+SYMBOL TABLE FOR C:\TP\PHY4501\TP\MYPROJECT.AOF(V1)
+----------------------------------------------------
+
+    VALUE              TYPE               NAME
+    -----              ----               ----
+
+	-------            MODULE             V1
+	D:0078H            SYMBOL             TB_L
+	C:0091H            SYMBOL             FSI
+	C:0035H            SYMBOL             MARCHE_INIT
+	C:00A2H            SYMBOL             TIMER50
+	D:007FH            SYMBOL             TH_D_H
+	B:0094H            SYMBOL             DIREC
+	C:009FH            SYMBOL             FININT
+	D:007EH            SYMBOL             TH_D_L
+	C:005CH            SYMBOL             SI0
+	C:006CH            SYMBOL             SI1
+	C:007AH            SYMBOL             SI2
+	C:0086H            SYMBOL             SI3
+	D:007DH            SYMBOL             TH_M_H
+	C:006AH            SYMBOL             FSI0
+	D:007BH            SYMBOL             TW_H
+	C:0078H            SYMBOL             FSI1
+	D:007CH            SYMBOL             TH_M_L
+	C:0084H            SYMBOL             FSI2
+	C:0030H            SYMBOL             DEBUT
+	C:00ACH            SYMBOL             ATTENTE
+	D:007AH            SYMBOL             TW_L
+	C:0033H            SYMBOL             BOUCLE
+	C:005AH            SYMBOL             ITIMER0
+	B:0095H            SYMBOL             MOTEUR
+	C:0033H            SYMBOL             FIN
+	D:0079H            SYMBOL             TB_H
+	C:0000H            LINE#              36
+	C:000BH            LINE#              38
+	C:0030H            LINE#              43
+	C:0033H            LINE#              45
+	C:0035H            LINE#              55
+	C:0038H            LINE#              56
+	C:003BH            LINE#              57
+	C:003EH            LINE#              58
+	C:0041H            LINE#              59
+	C:0044H            LINE#              60
+	C:0047H            LINE#              61
+	C:004AH            LINE#              62
+	C:004DH            LINE#              63
+	C:0050H            LINE#              64
+	C:0053H            LINE#              65
+	C:0055H            LINE#              66
+	C:0057H            LINE#              69
+	C:0059H            LINE#              70
+	C:005AH            LINE#              76
+	C:005CH            LINE#              78
+	C:005FH            LINE#              79
+	C:0061H            LINE#              80
+	C:0063H            LINE#              81
+	C:0064H            LINE#              82
+	C:0065H            LINE#              83
+	C:0066H            LINE#              84
+	C:0067H            LINE#              85
+	C:0068H            LINE#              86
+	C:006AH            LINE#              88
+	C:006CH            LINE#              90
+	C:006FH            LINE#              91
+	C:0071H            LINE#              92
+	C:0073H            LINE#              93
+	C:0074H            LINE#              94
+	C:0075H            LINE#              95
+	C:0076H            LINE#              96
+	C:0078H            LINE#              97
+	C:007AH            LINE#              100
+	C:007DH            LINE#              101
+	C:007FH            LINE#              102
+	C:0081H            LINE#              103
+	C:0082H            LINE#              104
+	C:0084H            LINE#              105
+	C:0086H            LINE#              108
+	C:0089H            LINE#              109
+	C:008BH            LINE#              110
+	C:008DH            LINE#              111
+	C:008FH            LINE#              112
+	C:0091H            LINE#              118
+	C:0093H            LINE#              119
+	C:0095H            LINE#              120
+	C:0096H            LINE#              121
+	C:0098H            LINE#              122
+	C:009AH            LINE#              123
+	C:009BH            LINE#              124
+	C:009DH            LINE#              126
+	C:009FH            LINE#              128
+	C:00A1H            LINE#              129
+	C:00A2H            LINE#              134
+	C:00A4H            LINE#              137
+	C:00A7H            LINE#              138
+	C:00AAH            LINE#              139
+	C:00ACH            LINE#              141
+	C:00AFH            LINE#              142
+	C:00B1H            LINE#              143
+	C:00B3H            LINE#              145
+	C:00B5H            LINE#              147
+	-------            ENDMOD             V1
+	N:00E8H            PUBLIC             TIM1_INIT
+	N:0010H            PUBLIC             SIZEBUFPRINTF
+	N:0100H            PUBLIC             XSTACKLEN
+	N:0001H            PUBLIC             _LINKERSYMB_DUMMY_
+
+LINK/LOCATE RUN COMPLETE,  NO ERROR FOUND.
+

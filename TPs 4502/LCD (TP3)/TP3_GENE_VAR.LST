@@ -1,0 +1,226 @@
+MACRO ASSEMBLER TP3_GENE_VAR                                11/22/18 12:58:16 PAGE     1
+
+
+WIN32 MACRO ASSEMBLER MA51 V06.04.19OBJECT MODULE PLACED IN C:\TP\PHY4501\TP\TP3_GENE_VAR.OBJ
+ASSEMBLER INVOKED BY: MA51.EXE C:\TP\PHY4501\TP\TP3_GENE_VAR.A51 OJ(C:\TP\PHY4501\TP\TP3_GENE_VAR.OBJ) PIN(C:\RIDE\INC;C:\RIDE\INC\51) PIN(C:\RIDE\INC\51\) EP LINES SYNTAX(ASM51) MOD51 PR(C:\TP\PHY4501\TP\TP3_GENE_VAR.LST) XR DB PW(80) RB(0) 
+
+LOC     OBJ           LINE    SOURCE
+                         1         ;Gene_var
+                         2      ;Generer signal rectangulaire à rapport variable
+                         3      ;19/11/18
+                         4      
+                         5      ;Déclaration des variables
+                         6     
+  00B0                   7     GENE				BIT	P3.0
+  0090                   8     DOWN				BIT	P1.0
+  0091                   9     UP					BIT	P1.1
+  007F                  10     TUPH				DATA	7FH
+  007E                  11     TUPL				DATA	7EH
+  007D                  12     TDOH				DATA	7DH
+  007C                  13     TDOL				DATA	7CH 
+  007B                  14     CMP				DATA	7BH
+  00D5                  15     MODIF				BIT	F0
+                        16     
+                        17     
+                        18     ;Table des IT
+  0000                  19     					ORG	0000H				;directive assembleur
+0000    802E            20     					SJMP	DEBUT
+  000B                  21     					ORG	000BH
+000B    8070            22     					SJMP	ITIMER0
+  0030                  23     					ORG	0030H
+                        24     
+                        25     ;Programme principal
+                        26     DEBUT: 			
+0030    12009F          27     					LCALL INIT				;Initialisation des valeurs
+0033    D28D            28     					SETB	TF0				;On active la première interruption
+0035    20B0FD          29     BOUCLE: 			JB		GENE,BOUCLE					                                          
+0038    30D53A          30     					JNB	MODIF,TEMPO
+                        31     					
+003B    30901A          32     SID: 				JNB	DOWN,FSI       ;début de la boucle exécuté toute les secondes   
+                        33     
+003E    E57E            34     					MOV	A,TUPL              
+0040    9414            35     					SUBB	A,#14H               
+0042    F57E            36     					MOV	TUPL,A                
+0044    E57F            37     					MOV	A,TUPH			;Décrémentation du rapport cyclique
+0046    9400            38     					SUBB	A,#00H                 
+0048    F57F            39     					MOV	TUPH,A                  
+004A    E57C            40     					MOV	A,TDOL                   
+004C    2414            41     					ADD	A,#14H                    
+004E    F57C            42     					MOV	TDOL,A                     
+0050    E57D            43     					MOV	A,TDOH                      
+0052    3400            44     					ADDC	A,#00H            
+0054    F57D            45     					MOV	TDOH,A
+0056    C2D5            46     					CLR 	MODIF
+                        47     					                  
+                        48     					
+                        49     
+                        50     FSI: 
+                        51     
+0058    3091DA          52     SIU:          	JNB	UP,BOUCLE
+                        53     				
+005B    E57E            54     					MOV	A,TUPL
+005D    2414            55     					ADD	A,#14H
+005F    F57E            56     					MOV	TUPL,A
+0061    E57F            57     					MOV	A,TUPH
+0063    3400            58     					ADDC	A,#00H
+0065    F57F            59     					MOV	TUPH,A
+0067    E57C            60     					MOV	A,TDOL			;Incrémentation du rapport cyclique
+0069    9414            61     					SUBB	A,#14H
+006B    F57C            62     					MOV	TDOL,A
+006D    E57D            63     					MOV	A,TDOH
+006F    9400            64     					SUBB	A,#00H
+0071    F57D            65     					MOV	TDOH,A			;fin de la boucle exécuté toute les secondes
+0073    C2D5            66     					CLR 	MODIF
+                        67     FSN: 							
+                        68     					
+0075    757B13          69     TEMPO: 			MOV	CMP,#13H
+0078    1200C8          70     					LCALL	TIMER1S
+                        71     				
+007B    80B8            72     FIN: 				SJMP	BOUCLE
+                        73     
+                        74     ;
+                        75     ;__________________________________________________________
+                        76     ;interuption timer 0
+                        77     ITIMER0: 
+007D    C0E0            78     					PUSH 	ACC
+                        79     					
+007F    30B006          80     SIHAUT: 			JNB	GENE,SINON1
+0082    A87E            81     					MOV	R0,TUPL
+0084    A97F            82     					MOV	R1,TUPH
+                        83     
+0086    8004            84     FINSI: 			SJMP	FSINON
+0088    A87C            85     SINON1: 			MOV	R0,TDOL
+008A    A97D            86     					MOV	R1,TDOH
+                        87     
+                        88     FSINON: 
+                        89     					
+                        90     					
+008C    C28C            91     					CLR	TR0				;on arrete le timer	1
+008E    E58A            92     					MOV	A,TL0				;							1			
+0090    28              93     					ADD	A,R0				;							1			
+0091    F58A            94     					MOV	TL0,A				;							1		
+0093    E58C            95     					MOV	A,TH0				;							1			
+0095    39              96     					ADDC	A,R1				;							1			
+0096    F58C            97     					MOV	TH0,A				;							1			
+                        98     
+0098    D28C            99     					SETB	TR0				;démarage du timer
+009A    B2B0           100     					CPL	GENE				;on passe d'un état à l'autre
+                       101     					
+009C    D0E0           102     					POP ACC
+009E    32             103     					RETI
+                       104     					
+                       105     					
+                       106     ;
+                       107     ;______________________________________________________________
+                       108     ;initialisation
+                       109     
+                       110     INIT: 
+009F    75A882         111     					MOV	IE,#82H
+00A2    758911         112     					MOV	TMOD,#11H		;mode timer 16bit pour les deux timer
+00A5    757EE7         113     					MOV	TUPL,#0E7H
+00A8    757FFC         114     					MOV	TUPH,#0FCH		;Initialisation rapport 80/20
+00AB    757C3F         115     					MOV	TDOL,#3FH
+00AE    757DFF         116     					MOV	TDOH,#0FFH
+00B1    D2D5           117     					SETB	F0
+00B3    22             118     					RET
+                       119     					
+                       120     					
+                       121     					
+                       122     					
+                       123     ;
+                       124     ;_______________________________________________________________
+                       125     ;Timer 50ms
+00B4    C0E0           126     TIMER50: 			PUSH	ACC
+                       127     		
+                       128     		
+00B6    758D3C         129     					MOV	TH1,#3CH			;réglage sur 50ms
+00B9    758BAF         130     					MOV	TL1,#0AFH
+00BC    D28E           131     					SETB	TR1				;démarage du timer
+                       132     					
+00BE    308FFD         133     ATTENTE: 			JNB	TF1,ATTENTE		;attente du flag
+00C1    C28E           134     					CLR	TR1				;on arrete le timer et le flag
+00C3    C28F           135     					CLR	TF1
+                       136     					
+00C5    D0E0           137     					POP	ACC
+                       138     						
+00C7    22             139     					RET
+                       140     					
+                       141     ;___________________________________________________________________
+                       142     ;timer cmp*50ms
+                       143     TIMER1S: 	
+00C8    1200B4         144     CTIMER50: 		LCALL	TIMER50
+00CB    D57BFA         145     					DJNZ	CMP,CTIMER50
+00CE    D2D5           146     					SETB	MODIF
+00D0    22             147     					RET
+                       148     
+                       149     					END
+MACRO ASSEMBLER TP3_GENE_VAR                                11/22/18 12:58:16 PAGE     0
+
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES             REFERENCES
+
+SID. . . . . . . .  C ADDR   003BH   A                          32# 
+CMP. . . . . . . .  D ADDR   007BH   A                          14# 69 145 
+TUPH . . . . . . .  D ADDR   007FH   A                          10# 37 39 57 59 82 
+                                                                114 
+P1 . . . . . . . .  D ADDR   0090H   A                          8 9 
+FSI. . . . . . . .  C ADDR   0058H   A                          32 50# 
+P3 . . . . . . . .  D ADDR   00B0H   A                          7 
+TIMER1S. . . . . .  C ADDR   00C8H   A                          70 143# 
+TEMPO. . . . . . .  C ADDR   0075H   A                          30 69# 
+TUPL . . . . . . .  D ADDR   007EH   A                          11# 34 36 54 56 81 
+                                                                113 
+UP . . . . . . . .  B ADDR   0090H.1 A                          9# 52 
+TIMER50. . . . . .  C ADDR   00B4H   A                          126# 144 
+FSN. . . . . . . .  C ADDR   0075H   A                          67# 
+ACC. . . . . . . .  D ADDR   00E0H   A                          78 102 126 137 
+CTIMER50 . . . . .  C ADDR   00C8H   A                          144# 145 
+TF0. . . . . . . .  B ADDR   0088H.5 A                          28 
+TF1. . . . . . . .  B ADDR   0088H.7 A                          133 135 
+TH0. . . . . . . .  D ADDR   008CH   A                          95 97 
+FSINON . . . . . .  C ADDR   008CH   A                          84 88# 
+TH1. . . . . . . .  D ADDR   008DH   A                          129 
+SIHAUT . . . . . .  C ADDR   007FH   A                          80# 
+IE . . . . . . . .  D ADDR   00A8H   A                          111 
+MODIF. . . . . . .  B ADDR   00D0H.5 A                          15# 30 46 66 146 
+                                                                
+TDOH . . . . . . .  D ADDR   007DH   A                          12# 43 45 63 65 86 
+                                                                116 
+TL0. . . . . . . .  D ADDR   008AH   A                          92 94 
+SIU. . . . . . . .  C ADDR   0058H   A                          52# 
+TL1. . . . . . . .  D ADDR   008BH   A                          130 
+TDOL . . . . . . .  D ADDR   007CH   A                          13# 40 42 60 62 85 
+                                                                115 
+INIT . . . . . . .  C ADDR   009FH   A                          27 110# 
+DEBUT. . . . . . .  C ADDR   0030H   A                          20 26# 
+TMOD . . . . . . .  D ADDR   0089H   A                          112 
+ATTENTE. . . . . .  C ADDR   00BEH   A                          133# 
+TR0. . . . . . . .  B ADDR   0088H.4 A                          91 99 
+F0 . . . . . . . .  B ADDR   00D0H.5 A                          15 117 
+TR1. . . . . . . .  B ADDR   0088H.6 A                          131 134 
+SINON1 . . . . . .  C ADDR   0088H   A                          80 85# 
+DOWN . . . . . . .  B ADDR   0090H.0 A                          8# 32 
+FINSI. . . . . . .  C ADDR   0086H   A                          84# 
+BOUCLE . . . . . .  C ADDR   0035H   A                          29# 52 72 
+ITIMER0. . . . . .  C ADDR   007DH   A                          22 77# 
+FIN. . . . . . . .  C ADDR   007BH   A                          72# 
+GENE . . . . . . .  B ADDR   00B0H.0 A                          7# 29 80 100 
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    165    ----
+   XDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+REGISTER BANK(S) USED : 0 
+
+ASSEMBLY COMPLETE.   0 WARNING(S)   0 ERROR(S)

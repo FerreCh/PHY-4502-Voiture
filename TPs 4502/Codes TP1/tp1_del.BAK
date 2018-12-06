@@ -1,0 +1,23 @@
+;Commande DEL
+;Deuxieme exercice
+
+;Déclaration des variables
+
+BP					bit	P0.0				;bouton poussoir
+Aff				bit	P3.0				;DEL
+
+;Table des IT
+					org	0000h				;directive assembleur
+					SJMP	debut
+					org	0030h
+
+;Programme principal
+
+debut:
+
+attentehaut:	JNB	BP,attentehaut	;Attente BP=1
+attentebas:		JB		BP,attentebas	;Attente BP=0
+					CPL	Aff				;changer etat DEL
+					SJMP	attentehaut		;boucler à l'infini
+fin:				
+end

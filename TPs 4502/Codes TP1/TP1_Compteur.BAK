@@ -1,0 +1,35 @@
+;Compteur
+;Troisieme exercice
+
+;Déclaration des variables
+
+BP					bit	P0.0				;bouton poussoir
+Aff				equ	P3					;valeur a afficher
+SEL				bit	P0.1				;selection du mode
+
+;Table des IT
+					org	0000h				;directive assembleur
+					SJMP	debut
+					org	0030h
+
+;Programme principal
+
+debut:
+
+					MOV	Aff,#00h
+rpt:
+attentehaut:	JNB	BP,attentehaut	;Attente BP=1
+attentebas:		JB		BP,attentebas	;Attente BP=0
+
+SI:				JB		SEL,SINON		;Si SEL=0
+					DEC	Aff				;(Aff)<-(Aff)-1
+FSI:				SJMP	FSN
+
+SINON:			INC	Aff				;Si SEL=1, (Aff)<-(Aff)+1
+
+FSN:					
+					
+					
+jsq:				SJMP	rpt				;boucler à rpt
+fin:				
+					end

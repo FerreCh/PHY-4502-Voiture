@@ -1,0 +1,87 @@
+MACRO ASSEMBLER TP4_SERIE_EM                                11/29/18 09:22:02 PAGE     1
+
+
+WIN32 MACRO ASSEMBLER MA51 V06.04.19OBJECT MODULE PLACED IN C:\TP\PHY4501\TP\TP4_SERIE_EM.OBJ
+ASSEMBLER INVOKED BY: MA51.EXE C:\TP\PHY4501\TP\TP4_SERIE_EM.A51 OJ(C:\TP\PHY4501\TP\TP4_SERIE_EM.OBJ) PIN(C:\RIDE\INC;C:\RIDE\INC\51) PIN(C:\RIDE\INC\51\) EP LINES SYNTAX(ASM51) MOD51 PR(C:\TP\PHY4501\TP\TP4_SERIE_EM.LST) XR DB PW(80) RB(0) 
+
+LOC     OBJ           LINE    SOURCE
+                         1       ;Emission série
+                         2      ;29/11/18
+                         3      
+                         4      ;Déclaration des variables
+                         5     
+                         6     
+  0080                   7     BP					BIT	P0.0
+  0090                   8     DONNEE			DATA	P1
+                         9     
+                        10     
+                        11     ;Table des IT
+  0000                  12     					ORG	0000H				;directive assembleur
+0000    802E            13     					SJMP	DEBUT
+  0030                  14     					ORG	0030H
+                        15     ;____________________________________________________________
+                        16     ;Programme principal
+                        17     
+0030    759840          18     DEBUT: 			MOV	SCON,#40H
+0033    758700          19     					MOV	PCON,#00H
+0036    758920          20     					MOV	TMOD,#20H
+0039    758DE6          21     					MOV	TH1,#0E6H
+003C    758BE6          22     					MOV	TL1,#0E6H
+003F    D28E            23     					SETB	TR1				;on enclenche le timer
+                        24     BOUCLE:         
+                        25     
+0041    3080FD          26     ATTENTEHAUT: 	JNB	BP,ATTENTEHAUT	;Attente BP=1
+0044    2080FD          27     ATTENTEBAS: 		JB		BP,ATTENTEBAS	;Attente BP=0 -> front descendant
+0047    E590            28     					MOV	A,DONNEE
+0049    540F            29     					ANL	A,#0FH
+004B    4430            30     					ORL	A,#30H			;conversion en ASCII
+004D    F599            31     					MOV	SBUF,A
+004F    3099FD          32     ATT_F_EMI: 		JNB	TI,ATT_F_EMI	;attente fin émission
+0052    C299            33     					CLR	TI
+                        34     					
+                        35     
+0054    80EB            36     FIN: 				SJMP	BOUCLE
+                        37     
+                        38     					END
+MACRO ASSEMBLER TP4_SERIE_EM                                11/29/18 09:22:02 PAGE     0
+
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES             REFERENCES
+
+P0 . . . . . . . .  D ADDR   0080H   A                          7 
+P1 . . . . . . . .  D ADDR   0090H   A                          8 
+ATTENTEHAUT. . . .  C ADDR   0041H   A                          26# 
+ATT_F_EMI. . . . .  C ADDR   004FH   A                          32# 
+ATTENTEBAS . . . .  C ADDR   0044H   A                          27# 
+TH1. . . . . . . .  D ADDR   008DH   A                          21 
+SBUF . . . . . . .  D ADDR   0099H   A                          31 
+PCON . . . . . . .  D ADDR   0087H   A                          19 
+TL1. . . . . . . .  D ADDR   008BH   A                          22 
+BP . . . . . . . .  B ADDR   0080H.0 A                          7# 26 27 
+SCON . . . . . . .  D ADDR   0098H   A                          18 
+DEBUT. . . . . . .  C ADDR   0030H   A                          13 18# 
+TMOD . . . . . . .  D ADDR   0089H   A                          20 
+TR1. . . . . . . .  B ADDR   0088H.6 A                          23 
+DONNEE . . . . . .  D ADDR   0090H   A                          8# 28 
+BOUCLE . . . . . .  C ADDR   0041H   A                          24# 36 
+FIN. . . . . . . .  C ADDR   0054H   A                          36# 
+TI . . . . . . . .  B ADDR   0098H.1 A                          32 33 
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     40    ----
+   XDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+REGISTER BANK(S) USED : 0 
+
+ASSEMBLY COMPLETE.   0 WARNING(S)   0 ERROR(S)
